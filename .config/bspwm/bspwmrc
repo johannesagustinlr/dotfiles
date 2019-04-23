@@ -1,0 +1,30 @@
+#!/bin/sh
+killall -9 sxhkd compton polybar feh
+
+sxhkd &
+~/.config/polybar/launch.sh
+feh --bg-fill ~/Downloads/cloudpink.jpg
+bspc monitor -d TERMINAL BROWSER CODE MUSIC READING CHAT
+bspc config border_width         4
+bspc config window_gap          10
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config focus_follows_pointer false
+
+# source the colors.
+#. "${HOME}/.cache/wal/colors.sh"
+
+# Set the border colors.
+
+
+bspc rule -a discord desktop=^6
+bspc rule -a Android_Studio state=tiled
+bspc config active_border_color "#282F37"
+bspc config normal_border_color "#282F37"
+bspc config focused_border_color "#282F37"
+# Use the line below if you are on bspwm >= 0.9.4
+bspc config presel_feedback_color "75DBE1"
+# Use the line below if you are on bspwm < 0.9.4
+#bspc config presel_border_color "$color1"
+#compton &
