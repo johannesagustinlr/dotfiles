@@ -17,7 +17,7 @@ URxvt.font: xft:Hack:size=9
 URxvt.internalBorder: 22
 
 ! =================
-
+! Color from onedark.vim https://github.com/joshdick/onedark.vim
 ! special
 *.foreground:   #ABB2BF
 *.background:   #282C34
