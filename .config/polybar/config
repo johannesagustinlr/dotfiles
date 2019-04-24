@@ -1,0 +1,187 @@
+;=============================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;=============================================================
+
+[bar/base]
+monitor = HDMI-1
+
+width = 100%
+height = 30
+fixed-center = true
+
+background = ${xrdb:background:#1D1F28}
+foreground = ${xrdb:foreground:#FDFDFD}
+
+
+font-0 = Hack:size=9:weight=bold;2
+font-1 = Symbols Nerd Font:style=2048-em:size=12;2
+font-2 = DejaVu Sans:size=22:antialias=false;2
+font-3 = Roboto:size=7;7
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+
+[bar/top]
+inherit = bar/base
+modules-left =  bsp 
+modules-center = date
+modules-right =  available-space volume powermenu 
+
+[module/temp]
+type = internal/temperature
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+interval = 3
+thermal-zone = 0
+
+warn-temperature = 65
+format = Temp: <label>
+format-padding = 1
+label = %temperature-c%
+label-foreground = ${xrdb:color1}
+format-warn = Temp: <label-warn>
+label-warn = %temperature-c%
+label-warn-padding = 1
+label-warn-foreground = ${xrdb:color1}
+
+[module/available-space]
+type = internal/fs
+mount-0 = /
+interval = 10
+label-mounted = HDD: %free%
+format-mounted-padding = 2
+
+[module/bsp]
+type = internal/bspwm
+pin-workspaces = true
+inline-mode = false
+enable-click = true
+enable-scroll = false
+reverse-scroll = false
+format = <label-state><label-mode>
+label-dimmed-focused-foreground = ${xrdb:color6}
+label-dimmed-focused-underline = ${xrdb:color4}
+label-dimmed-focused-background = ${xrdb:color1}
+label-monitor = %name%
+label-mode-padding = 1
+label-focused = %name%
+label-focused-padding = 1
+label-focused-underline = ${xrdb:color9}
+label-occupied = %name%
+label-occupied-padding = 1
+label-urgent = %name%
+label-urgent-padding = 1
+label-empty = %name%
+label-empty-padding = 1
+label-focused-foreground = ${xrdb:color1}
+label-occupied-foreground = ${xrdb:color4}
+
+[module/volume]
+type = internal/pulseaudio
+use-ui-max = true
+format-volume = Vol: <label-volume>
+format-volume-padding = 2
+label-volume = "%percentage%%"
+format-muted= <label-muted>
+label-muted = MUTED
+label-muted-foreground = ${xrdb:color1}
+format-muted-padding = 2
+
+
+
+[module/wlan]
+type = internal/network
+interface = ${env:polybar_wlan}
+interval = 3
+
+format-connected = <ramp-signal><label-connected>
+format-connected-padding = 2
+label-connected = test %local_ip% (%essid%)
+
+format-disconnected = <label-disconnected>
+format-disconnected-padding = 2
+label-disconnected = test
+label-disconnected-foreground = ${xrdb:color1:#8abeb7}
+
+ramp-signal-0 = 1
+ramp-signal-1 = 2
+ramp-signal-2 = 3
+ramp-signal-3 = 4
+ramp-signal-4 = 5
+ramp-signal-foreground = ${xrdb:color6}
+ramp-signal-padding-right = 1
+
+[module/eth]
+type = internal/network
+interface = ${env:polybar_eth}
+interval = 3
+
+format-connected-padding = 2
+
+format-connected-prefix = 
+format-connected-prefix-padding-right = 1
+format-connected-prefix-foreground = ${xrdb:color4:#8abeb7}
+label-connected = %local_ip%
+
+format-disconnected = 
+format-disconnected-padding = 2
+format-disconnected-foreground = ${xrdb:color1:#8abeb7}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = %A, %d-%m-%y
+time = %H:%M
+
+format-prefix-padding-right = 1
+format-prefix-foreground = ${xrdb:color4:#8897F4}
+format-padding = 2
+
+label = %date% | %time%
+
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+format-background = ${xrdb:background:#1D1F28}
+format-foreground = ${xrdb:foreground}
+
+format-padding = 2
+
+label-open = 
+label-close = ﰸ cancel
+label-separator = "    "
+label-separator-foreground = ${xrdb:background:#1f1f1f}
+
+menu-0-0 = 痢 reboot
+menu-0-0-foreground = ${xrdb:color1:#8abeb7}
+menu-0-0-exec = reboot
+menu-0-1 = ﮤ poweroff
+menu-0-1-foreground = ${xrdb:color1:#8abeb7}
+menu-0-1-exec = poweroff
+menu-0-2 =  logoff
+menu-0-2-exec = pkill -KILL -u $USER
+menu-0-2-foreground = ${xrdb:color1:#8abeb7}
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
